@@ -1,0 +1,382 @@
+﻿@model Employee.Models.EmployeeModel
+@{
+    ViewBag.Title = "Index";
+}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet'>
+    <title>Employee Form</title>
+
+</head>
+<body>
+    @*<style>
+
+
+            .container {
+                margin: 20px auto;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            h2 {
+                text-align: center;
+            }
+
+            .form-control {
+                margin-bottom: 0px;
+            }
+
+            .form-row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 20px;
+            }
+
+            .form-group {
+                flex: 0 0 48%;
+            }
+
+            .selected-page {
+                background-color: #1B4F72;
+                color: #fff;
+            }
+        </style>*@
+    @*<style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .main {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 300px;
+        }
+
+            .main h2 {
+                color: #4caf50;
+                margin-bottom: 20px;
+            }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button[type="button"] {
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+    </style>*@
+    <div class="container">
+        <h2>Registration Form</h2>
+        <div class="form-group">
+            
+            <form action="">
+                <label>Name</label>
+                <input type="text" id="Name" class=".Name" /><br />
+                <label id="NameVal"></label>
+                <br />
+                <label>DateOfBirth</label>
+                <input type="date" id="DateOfBirth" class=".DateOfBirth" /><br />   
+                <label id="age"></label>
+                <br />
+                <label>Email</label>
+                <input type="text" id="Email" class=".Email" /><br />
+                <label id="EmailVal"></label>
+                <br />
+                <label>Upload Picture</label>
+                <input type="file" id="Picture" accept=".png, .gif, .jpeg" /><br />
+                <br />
+                <input type="button" id="submitBtn" value="Submit" class="btn btn-primary" onclick="SaveEmployeeDetails()">
+
+
+                <input type="button" id="clearBtn" value="Clear" class="btn btn-primary" onclick="ClearEmployeeDetails()">
+
+            </form>
+        </div>
+    
+</div>
+
+            @*<div class="container">
+                    <h4>Employee Registration Form</h4>
+                    <form class="form-control">
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-10">
+                                    <label>Name</label>
+                                    <input type="text" id="Name" class=".Name" />
+                                    <label id="NameVal"></label>
+                                </div>
+                                <div class="col-md-10">
+                                    <label>DateOfBirth</label>
+                                    <input type="date" id="DateOfBirth" class=".DateOfBirth" />
+                                    <label id="age"></label>
+                                </div>
+                                <div class="col-md-10">
+                                    <label>Email</label>
+                                    <input type="text" id="Email" class=".Email" />
+                                    <label id="EmailVal"></label>
+                                </div>
+                                <div class="col-md-10">
+                                    <label>Upload Picture</label>
+                                    <input type="file" id="Picture" accept=".png, .gif, .jpeg" />
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="button" id="submitBtn" value="Submit" class="btn btn-primary" onclick="SaveEmployeeDetails()">
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="button" id="clearBtn" value="Clear" class="btn btn-primary" onclick="ClearEmployeeDetails()">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>*@
+
+            <div class="container">
+                <h4>Employee Details</h4>
+                <div class="row">
+                    <div class="col-md-3">
+                        <input type="text" id="searchInput" placeholder="Search..." class="form-control mb-3">
+                    </div>
+                    <div class="col-md-3">
+                        <label id="lblTotal" style="padding-left: 10px; margin-top: 5px; font-weight: bold;"></label>
+                    </div>
+                </div>
+                <table id="employeeTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Employee ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Date of Birth</th>
+                            <th>Image</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div id="pagination" class="mt-3"></div>
+            </div>
+</body>
+</html>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="~/Scripts/bootstrap.datepicker.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.com/libraries/bootstrap-datetimepicker/4.17.37"></script>
+<script src="~/Scripts/toastr.js"></script>
+<link href="~/Scripts/toastr.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+<script>
+    //jQuery.noConflict();
+    //jQuery(document).ready(function ($) {
+
+    $("#Name").on("keypress", function (event) {
+        var keyCode = event.which;
+        if ((keyCode < 65 || keyCode > 90) && (keyCode < 97 || keyCode > 122) && keyCode !== 32) {
+            event.preventDefault();
+        }
+    });
+
+    var pageSize = 10;
+    var currentPage = 1;
+    var searchInput = $("#searchInput");
+    var paginationDiv = $("#pagination");
+
+
+    loadEmployeeData();
+
+    searchInput.on('input', function () {
+        loadEmployeeData();
+    });
+
+    function loadEmployeeData() {
+        debugger;
+        var searchKeyword = searchInput.val().trim();
+        var offset = (currentPage - 1) * pageSize;
+
+        $.ajax({
+            url: '/Employee/GetEmployee',
+            type: 'GET',
+            data: {
+                SearchKeyword: searchKeyword,
+                Offset: offset,
+                PageSize: pageSize
+            },
+            dataType: 'json',
+            success: function (response) {
+                var table = $('#employeeTable tbody');
+                table.empty();
+
+                if (response && response.data.length > 0) {
+                    for (var i = 0; i < response.data.length; i++) {
+                        var employee = response.data[i];
+                        var vhtml = '';
+                        var backgroundColor;
+                        vhtml += '<td style="background-color: ' + backgroundColor + ';">' + ((currentPage - 1) * pageSize + i + 1) + '</td>';
+                        vhtml += '<td style="background-color: ' + backgroundColor + ';">' + employee.ID + '</td>';
+                        vhtml += '<td style="background-color: ' + backgroundColor + ';">' + employee.Name + '</td>';
+                        vhtml += '<td style="background-color: ' + backgroundColor + ';">' + employee.Email+ '</td>';
+                        vhtml += '<td style="background-color: ' + backgroundColor + ';">' + employee.DateOfBirth + '</td>';
+                        vhtml += '<td style="background-color: ' + backgroundColor + ';">' + '<img alt="ImageName" src="../UserImage/' + employee.Picture + '"width="50" height="50">' + '</td>';
+                        vhtml += '<td><a href="#" class="btn btn-blue" onclick="return UpdatePopup(' + employee.Id + ')">Edit</a> | <a href="#"  type="button" class="btn-danger text-white" onclick="DeleleEmployee(' + employee.ID + ')">Delete</a></td>';
+
+                        var row = $('<tr>').append(vhtml);
+                        table.append(row);
+                    }
+                    
+                } else {
+                    paginationDiv.empty();
+                }
+            },
+            error: function (xhr, status, error) {
+                toastr.error("Error occurred while fetching employee", "Error")
+                console.error('Error occurred while fetching employee details:', error);
+            }
+        });
+    }
+
+    function DeleleEmployee(ID) {
+        debugger
+        var ans = confirm("Are you sure you want to delete?");
+        if (ans) {
+            $.ajax({
+                url: "/Employee/DeleteEmployee?id=" + ID,
+                type: "POST",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "html",
+                success: function (result) {
+                    loadEmployeeData();
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+
+
+    function SaveEmployeeDetails() {
+        debugger;
+
+        var EmpDet = {
+            //ID: $("#Id").val(),
+            Name: $("#Name").val(),
+            Email: $("#Email").val(),
+            DateOfBirth: $("#DateOfBirth").val()
+            //EmployeeExperienceLevel_ID: $("#Picture").val()
+        };
+        var uploadfile = document.getElementById("Picture");
+        var file = uploadfile.files[0];
+        var allowedTypes = ["image/jpg", "image/jpeg", "image/png"];
+        
+        if (EmpDet.Name == "" || EmpDet.Name == undefined || EmpDet.Name == null) {
+            toastr.warning("Please enter the Name..!", "Warning");
+        }
+        else if (EmpDet.Email == "" || EmpDet.Email == undefined || EmpDet.Email == null) {
+            toastr.warning("Please enter the Email ID..!", "Warning");
+        }
+        else if (isValid == false) {
+            toastr.warning("Please enter the Valid Email ID..!", "Warning");
+        }
+        else if (EmpDet.DateOfBirth == "" || EmpDet.DateOfBirth == undefined || EmpDet.DateOfBirth == null) {
+            toastr.warning("Please select the Date of Birth..!", "Warning");
+        }
+        else if (file && allowedTypes.indexOf(file.type) === -1) {
+            toastr.warning("Invalid file type. Please select a PDF or Word document.", "Warning");
+            return;
+        }
+        else {
+            
+            var filedata = new FormData();
+            for (let i = 0; i < uploadfile.files.length; i++) {
+                filedata.append(uploadfile.files[i].name, uploadfile.files[i]);
+            }
+            filedata.append("EmpDet", JSON.stringify(EmpDet));
+
+            var isValid = validateEmail(EmpDet.Email);
+
+            $.ajax({
+                url: '@Html.Raw(@Url.Action("InsertUpdateEmployeeDetails", "Employee"))',
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                data: filedata,
+                cache: false,
+                timeout: 600000,
+                success: function (response) {
+                    //debugger;
+                    if (response.success == true) {
+                        toastr.success(response.filedata, "Success");
+                    }
+                    else {
+                        toastr.error("Error occurred while saving employee", "Error");
+                    }
+                    loadEmployeeData();
+                },
+                error: function () {
+                    toastr.error("Error occurred while saving employee", "Error");
+                }
+
+
+            });
+
+            ClearEmployeeDetails();
+        }
+    }
+    
+        
+    
+
+    function ClearEmployeeDetails() {
+        //debugger;
+        $("#Name").val("");
+        $("#Email").val(""),
+        $("#DateOfBirth").val("");
+        $("#Picture").val("");
+    }
+    function validateEmail(empEmail) {
+        var emailRegex = /^[^\s]+[^\s]+\.[^\s]+$/;
+        return emailRegex.test(empEmail);
+    }
+
+</script>
+
+
